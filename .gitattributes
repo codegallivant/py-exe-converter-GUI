@@ -1,2 +1,1 @@
-* linguist-vendored
-*.tcl linguist-vendored=true
+tkthemes/* linguist-vendored
