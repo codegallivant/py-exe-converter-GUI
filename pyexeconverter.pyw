@@ -44,7 +44,7 @@ target_file_path_browse_button = tk.ttk.Button(target_file_path_frame,text="Brow
 
 name_frame = tk.ttk.Frame(left_frame)
 name_label = tk.ttk.Label(name_frame, text="Name to assign to the EXE file -")
-name_entry = tk.ttk.Entry(name_frame)
+name_entry = tk.ttk.Entry(name_frame, width=30)
 
 destination_folder_path_frame = tk.ttk.Frame(left_frame)
 destination_folder_path_label = tk.ttk.Label(destination_folder_path_frame, text="Path to folder to store the EXE file -")
@@ -56,7 +56,7 @@ def destination_folder_path_browsefunc():
 destination_folder_path_browse_button = tk.ttk.Button(destination_folder_path_frame,text="Browse",command=destination_folder_path_browsefunc)
 
 icon_path_frame = tk.ttk.Frame(left_frame)
-icon_path_label = tk.ttk.Label(icon_path_frame, text="Path to taskbar icon for EXE file -")
+icon_path_label = tk.ttk.Label(icon_path_frame, text="Path to icon for EXE file -")
 icon_path_entry = tk.ttk.Entry(icon_path_frame, width=80)
 def icon_path_browsefunc():
     filepath =tk.filedialog.askopenfilename(filetypes=((".ico files","*.ico"),("All files","*.*")))
@@ -108,6 +108,9 @@ add_data_entry = tk.ttk.Entry(add_data_bottom_frame, width=66)
 add_data_browse_folder_button = tk.ttk.Button(add_data_bottom_frame, text="Add folder", command=lambda:add_data_browsefunc("folder"))
 add_data_browse_file_button = tk.ttk.Button(add_data_bottom_frame, text="Add file(s)", command=lambda:add_data_browsefunc("file"))
 
+hidden_imports_label = tk.ttk.Label(left_frame, text = "Add hidden imports (Separate with commas) -")
+hidden_imports_entry = tk.ttk.Entry(left_frame, width=40)
+
 
 left_frame.grid(row=0, column=0, padx=(10,5))
 right_frame.grid(row=0, column=1, padx=(5,10), sticky="ns", pady=(50,15))
@@ -119,7 +122,7 @@ target_file_path_browse_button.pack(anchor="w", side="left")
 
 name_frame.pack(anchor="w")
 name_label.pack(anchor="w")
-name_entry.pack(anchor="w", side="left")
+name_entry.pack(anchor="w")
 
 destination_folder_path_frame.pack(anchor="w", pady=10)
 destination_folder_path_label.pack(anchor="w")
@@ -145,7 +148,7 @@ clean_switch.pack(anchor="w")
 
 clear_destination_dir_switch.pack(anchor="w")
 
-add_data_frame.pack(anchor="w", fill="both")
+add_data_frame.pack(anchor="w", fill="both", pady=(2.5,10))
 
 add_data_top_frame.grid(row=0, column=0, sticky="ew")
 add_data_label.grid(row=0, column=0, sticky="w")
@@ -154,14 +157,17 @@ add_data_label.grid(row=0, column=0, sticky="w")
 # add_data_remove_row_button.grid(row=0, column=1)
 
 add_data_bottom_frame.grid(row=1, column=0)
-add_data_entry.grid(row=0, column=0, padx=(0,5), pady=2.5)
+add_data_entry.grid(row=0, column=0, padx=(0,5))
 add_data_browse_file_button.grid(row=0, column=1)
 add_data_browse_folder_button.grid(row=0, column=2, padx=(2.5,0))
+
+hidden_imports_label.pack(anchor="w")
+hidden_imports_entry.pack(anchor="w")
 
 
 
 def create_exe(target_file_path, 
-    file_name, destination_folder_path, icon_path, add_data_paths,  onefile, noconsole, clean, # pyinstaller options
+    file_name, destination_folder_path, icon_path, add_data_paths, hidden_imports,  onefile, noconsole, clean, # pyinstaller options
     delete_unnecessary_files, clear_destination_dir # custom options
     ):
 
@@ -184,6 +190,8 @@ def create_exe(target_file_path,
         elif os.path.isdir(path):
             options.append(f"--add-data={path}{os.pathsep}{os.path.basename(path)}")
 
+    for hidden_import in hidden_imports:
+        options.append(f"--hidden-import={hidden_import}")
 
     if onefile is True:
         options.append("--onefile")
@@ -249,8 +257,14 @@ def create_exe_button_command():
     add_data_paths = list()
     for path in add_data_entry.get().split(','):
         path = path.strip()
-        if (os.path.isfile(path) or os.path.isdir(path)) and path != "":
+        if path != "" and (os.path.isfile(path) or os.path.isdir(path)):
             add_data_paths.append(path)
+
+    hidden_imports = list()
+    for hidden_import in hidden_imports_entry.get().split(','):
+        hidden_import = hidden_import.strip()
+        if hidden_import != "":
+            hidden_imports.append(hidden_import)    
 
     onefile = bool(onefile_switch_intvar.get())
     noconsole = bool(console_switch_intvar.get())
@@ -275,7 +289,7 @@ def create_exe_button_command():
         return
 
 
-    create_exe_thread = threading.Thread(target=lambda:create_exe(target_file_path, file_name, destination_folder_path, icon_path, add_data_paths, onefile, noconsole, clean, delete_unnecessary_files, clear_destination_dir))
+    create_exe_thread = threading.Thread(target=lambda:create_exe(target_file_path, file_name, destination_folder_path, icon_path, add_data_paths, hidden_imports, onefile, noconsole, clean, delete_unnecessary_files, clear_destination_dir))
     create_exe_thread.start()
 
     #start progress bar

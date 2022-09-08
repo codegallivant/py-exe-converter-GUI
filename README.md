@@ -19,8 +19,10 @@ The following options of pyinstaller are supported in the GUI -
 - `--add-data`: Additional non-binary files or folders to be added to the executable.
 - `--noconsole`: Do not provide a console window for standard i/o. 
 - `--clean`: Clean PyInstaller cache and remove temporary files before building.
+- `--distpath`,`--workpath`,`--specpath`: Where to put to the bundled app, temporary work files and the spec file. Currently, the GUI allows you to input 1 directory, which will be used for all of these parameters. It is the destination folder path.
+- `--hidden-import`: Name imports not visible in the code of the script(s).
 
-### Custom options
+### Other options
 - Automatically deleting unnecessary files after creation of the executable
 - Clearing the destination directory before creation of the executable
 
