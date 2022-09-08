@@ -4,7 +4,7 @@ GUI Interface to create executables from python applications.
 
 <br>
 
-![Screenshot of application](https://user-images.githubusercontent.com/27366422/189177218-f86631fe-b92a-40b5-943a-4c3bf08a2125.png)
+![Screenshot of application](https://user-images.githubusercontent.com/27366422/189177563-8413f517-8e5e-482e-a628-32cc9835fb81.png)
 
 <br>
 
