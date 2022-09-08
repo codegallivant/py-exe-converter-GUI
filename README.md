@@ -13,7 +13,7 @@ GUI Interface to create executables from python applications.
 ### `pyinstaller` options
 The `pyinstaller` module is used to create the executables.
 The following options of pyinstaller are supported in the GUI - 
-- `--name`: Name to assign to the bundled app and spec file (default: first script’s basename)
+- `--name`: Name to assign to the bundled app and spec file (default: first script’s basename).
 - `--onefile`: Create a one-file bundled executable. 
 - `--icon`: Apply the icon to a executable.
 - `--add-data`: Additional non-binary files or folders to be added to the executable.
@@ -23,8 +23,8 @@ The following options of pyinstaller are supported in the GUI -
 - `--hidden-import`: Name imports not visible in the code of the script(s).
 
 ### Other options
-- Automatically deleting unnecessary files after creation of the executable
-- Clearing the destination directory before creation of the executable
+- Automatically deleting unnecessary files (/build and .spec) after creation of the executable
+- Clearing the destination directory prior to creation of the executable
 
 <br>
 
