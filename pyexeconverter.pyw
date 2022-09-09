@@ -91,11 +91,13 @@ def add_data_browsefunc(browsetype):
         paths_tuple = (tk.filedialog.askdirectory(),)
     elif browsetype == "file":
         paths_tuple = tk.filedialog.askopenfilenames(filetypes=((("All files","*.*"),)))
-    paths = ','.join(str(path) for path in paths_tuple)
-    if add_data_entry.get().strip()=="":
-        add_data_entry.insert(0, paths)
-    else:
-        add_data_entry.insert("end", ','+paths) 
+    print(repr(paths_tuple))
+    if paths_tuple != ('',) and paths_tuple != '':
+        paths = ','.join(str(path) for path in paths_tuple)
+        if add_data_entry.get().strip()=="":
+            add_data_entry.insert(0, paths)
+        else:
+            add_data_entry.insert("end", ','+paths) 
 
 
 add_data_frame = tk.ttk.Frame(left_frame)
